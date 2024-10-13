@@ -1,36 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
+ <!-- JavaScript for form validation -->
+ <script>
+    function validateForm() {
+        // Get form elements
+        const username = document.getElementById("username");
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+
+        // Get error elements
+        const usernameError = document.getElementById("usernameError");
+        const emailError = document.getElementById("emailError");
+        const passwordError = document.getElementById("passwordError");
+        const confirmPasswordError = document.getElementById("confirmPasswordError");
+
+        // Regular expression for email validation
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+        let valid = true;
+
+        // Reset error messages and styles
+        usernameError.textContent = "";
+        emailError.textContent = "";
+        passwordError.textContent = "";
+        confirmPasswordError.textContent = "";
+
+        username.classList.remove("error");
+        email.classList.remove("error");
+        password.classList.remove("error");
+        confirmPassword.classList.remove("error");
+
+        // Username validation
+        if (username.value.trim() === "") {
+            usernameError.textContent = "Username is required.";
+            username.classList.add("error");
+            valid = false;
+        }
+
+        // Email validation
+        if (email.value.trim() === "") {
+            emailError.textContent = "Email is required.";
+            email.classList.add("error");
+            valid = false;
+        } else if (!emailPattern.test(email.value)) {
+            emailError.textContent = "Please enter a valid email address (e.g., joe@test.com).";
+            email.classList.add("error");
+            valid = false;
+        }
+
+        // Password validation
+        if (password.value.trim() === "") {
+            passwordError.textContent = "Password is required.";
+            password.classList.add("error");
+            valid = false;
+        }
+
+        // Confirm Password validation
+        if (confirmPassword.value.trim() === "") {
+            confirmPasswordError.textContent = "Please confirm your password.";
+            confirmPassword.classList.add("error");
+            valid = false;
+        } else if (password.value !== confirmPassword.value) {
+            confirmPasswordError.textContent = "Passwords do not match.";
+            confirmPassword.classList.add("error");
+            valid = false;
+        }
+
+        return valid; 
+    }
+</script>
+
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Sign Up - Fictional Storefront</title>
     <style>
-        /* Ensure the whole page takes up the full height of the viewport */
-        html, body {
-            height: 100%;
-            margin: 0;
+        /* Additional styling for error messages */
+        .error {
+            border-color: red !important;
         }
-        /* Flexbox layout for body to push footer to the bottom */
-        body {
-            display: flex;
-            flex-direction: column;
+
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
         }
-        .content {
-            flex: 1;
-        }
+
         .header-title {
             color: #4CAF50;
             font-size: 2.5rem;
         }
+
         .footer {
             background-color: #343a40;
             color: #fff;
             padding: 10px;
+            text-align: center;
             position: relative;
             bottom: 0;
             width: 100%;
         }
+
         .form-container {
             max-width: 600px;
             margin: 0 auto;
@@ -55,22 +130,26 @@
         </div>
 
         <div class="form-container">
-            <form>
+            <form id="signupForm" onsubmit="return validateForm()">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+                    <input type="text" class="form-control" id="username" placeholder="Enter your username">
+                    <div class="error-message" id="usernameError"></div>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                    <div class="error-message" id="emailError"></div>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                    <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                    <div class="error-message" id="passwordError"></div>
                 </div>
                 <div class="mb-3">
                     <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password">
+                    <div class="error-message" id="confirmPasswordError"></div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Sign Up</button>
             </form>
@@ -78,7 +157,7 @@
     </div>
 
     <!-- Footer Area -->
-    <footer class="footer text-center">
+    <footer class="footer">
         <div class="container">
             <ul class="list-inline">
                 <li class="list-inline-item"><a href="terms-of-use.html" class="text-white">Terms of Use</a></li>
@@ -88,7 +167,10 @@
         </div>
     </footer>
 
+   
+
     <!-- Bootstrap JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
